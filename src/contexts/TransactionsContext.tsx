@@ -37,9 +37,9 @@ export const TransactionsContext = createContext({} as TransactionContextType)
 export function TransactionsProvider({children}: TransactionsProviderProps) {
   
   const [transactions, setTransactions] = useState<Transaction[]>([])
-
+ console.log('transactions: ', transactions)
   const fetchTransactions = useCallback(async (query?: string) => {
-    const response = await api.get('/transactions', {
+    const response = await api.get('/db.json', {
       params: {
         _sort: 'createdAt',
         _order: 'desc',
@@ -54,12 +54,12 @@ export function TransactionsProvider({children}: TransactionsProviderProps) {
 
     const {description,category,price,type} = data
 
-    const response = await api.post('/transactions', {
+    const response = await api.post('/db.json', {
       description,
       price,
       category,
       type,
-      createdAt: new Date(),
+      createdAt: new Date().toISOString(),
      })
 
      setTransactions(state => [response.data, ...state])

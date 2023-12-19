@@ -1,5 +1,5 @@
-{
-  "transactions": [
+
+   [
     {
       "id": 1,
       "description": "Desenvolvimento de site",
@@ -41,4 +41,3 @@
       "id": 5
     }
   ]
-}

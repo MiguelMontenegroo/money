@@ -1,6 +1,7 @@
 import { ReactNode, useEffect, useState, useCallback } from "react";
 import { api } from "../lib/axios";
 import { createContext } from "use-context-selector";
+import {data} from '../../db.ts'
 
 interface Transaction {
   id: number
@@ -36,33 +37,32 @@ export const TransactionsContext = createContext({} as TransactionContextType)
 
 export function TransactionsProvider({children}: TransactionsProviderProps) {
   
-  const [transactions, setTransactions] = useState<Transaction[]>([])
+  const [transactions, setTransactions] = useState<Transaction[]>(data as Transaction[])
  console.log('transactions: ', transactions)
   const fetchTransactions = useCallback(async (query?: string) => {
-    const response = await api.get('/db.json', {
-      params: {
-        _sort: 'createdAt',
-        _order: 'desc',
-        q: query,
-      }
-    }) 
-    setTransactions(response.data)
-   
+ 
+    if(query){const textosFiltrados = data.filter(item => item.description.includes(query!));
+    setTransactions(textosFiltrados as Transaction[])
+    console.log(textosFiltrados);} else {
+      setTransactions(data as Transaction[])
+    }
+
+
    }, [])
 
   const createTransaction = useCallback(async (data: CreateTransactionInput) => {
 
-    const {description,category,price,type} = data
+    // const {description,category,price,type} = data
 
-    const response = await api.post('/db.json', {
-      description,
-      price,
-      category,
-      type,
-      createdAt: new Date().toISOString(),
-     })
-
-     setTransactions(state => [response.data, ...state])
+    // const response = await api.post('/db.json', {
+    //   description,
+    //   price,
+    //   category,
+    //   type,
+    //   createdAt: new Date().toISOString(),
+    //  })
+      const toDo = {...data,  createdAt: new Date().toISOString()} as Transaction
+     setTransactions([...transactions, toDo ])
   }, [])
 
 useEffect(() => {

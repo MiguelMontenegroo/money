@@ -1,5 +1,5 @@
 
-   [
+   export const data = [
     {
       "id": 1,
       "description": "Desenvolvimento de site",

@@ -1,5 +1,4 @@
 import { ReactNode, useEffect, useState, useCallback } from "react";
-import { api } from "../lib/axios";
 import { createContext } from "use-context-selector";
 import {data} from '../../db.ts'
 
